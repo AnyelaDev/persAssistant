@@ -31,3 +31,46 @@ This project follows a strict development workflow as outlined in the "Workflow 
 - Ensure all commits are meaningful and well-documented
 - Maintain clean, testable code architecture from the start
 - Follow issue-branch-PR workflow for all changes
+
+## Development Environment Setup
+
+### Prerequisites
+- Python 3.10+
+- Git
+
+### Setup Instructions for New Team Members
+
+1. **Clone the repository**:
+   ```bash
+   git clone <repository-url>
+   cd persAssistant
+   ```
+
+2. **Create and activate virtual environment**:
+   ```bash
+   python3 -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   ```
+
+3. **Install dependencies**:
+   ```bash
+   pip install -r requirements.txt
+   pip install -r requirements-dev.txt
+   ```
+
+4. **Install pre-commit hooks** (optional but recommended):
+   ```bash
+   pre-commit install
+   ```
+
+### Testing
+- Run tests: `pytest`
+- Run tests with coverage: `pytest --cov`
+- Format code: `black .`
+- Lint code: `flake8 .`
+- Type check: `mypy .`
+
+### Technology Stack
+- **GUI Framework**: Kivy
+- **Testing**: pytest, pytest-cov
+- **Code Quality**: black, flake8, mypy, pre-commit
