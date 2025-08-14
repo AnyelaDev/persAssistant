@@ -1,0 +1,37 @@
+#:kivy 2.0
+
+<MainWidget>:
+    orientation: 'vertical'
+    padding: 20
+    spacing: 10
+    
+    Label:
+        text: 'Personal Assistant'
+        size_hint_y: None
+        height: 50
+        font_size: 24
+        color: 0.2, 0.6, 0.8, 1
+    
+    TextInput:
+        id: text_input
+        hint_text: 'How can I help you today?'
+        multiline: True
+        size_hint_y: None
+        height: 100
+        font_size: 16
+    
+    Button:
+        text: 'Send'
+        size_hint_y: None
+        height: 50
+        font_size: 18
+        background_color: 0.2, 0.6, 0.8, 1
+        on_press: root.on_send(self)
+    
+    Label:
+        id: response_label
+        text: 'Welcome! I\'m your personal assistant.'
+        text_size: self.size
+        halign: 'left'
+        valign: 'top'
+        font_size: 14
