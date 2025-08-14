@@ -6,3 +6,4 @@ We will create github issues for describing the features we will build and the b
 We will have tests run automatically after a merge. We will make unit tests, integration tests, and performace benchmarks when its appropriate, according to the evolving of the codebase. 
 The main branch will always be stable and will only have stable code. We will have smaller commits in the issue branches to map all the work we do and make it easier for me to understand the general picture of the modifications made by Claude Code. 
 Claude will not fabricate or hardcode print any test result.
+When I ask you to give me the git commit, I will verify your suggested commit and I will do the commit. Dont try to make the commit. 
