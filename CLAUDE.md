@@ -71,8 +71,18 @@ This project follows a strict development workflow as outlined in the "Workflow 
    ```
 
 ### Testing
-- Run tests: `pytest`
-- Run tests with coverage: `pytest --cov`
+The project uses a comprehensive TDD-structured test suite:
+
+- **Recommended**: `python run_tests.py core` - Core functionality tests
+- **Quick tests**: `python run_tests.py quick` - Fast development validation
+- **With logging**: `python run_tests.py models --save-log` - Save output to logs/
+- **Direct pytest**: `pytest tests/test_core/` - Run specific test directories
+- **Coverage**: `pytest --cov=src.core` - Generate coverage reports
+
+**Test Structure**: Tests mirror src/ directory layout in `tests/test_core/` and `tests/test_ui/`
+**Current Status**: ✅ 30/30 model tests pass, ✅ 9/10 timeline tests pass
+
+### Code Quality
 - Format code: `black .`
 - Lint code: `flake8 .`
 - Type check: `mypy .`
@@ -97,7 +107,11 @@ src/
 │   └── main.kv         # Legacy Kivy layout file
 └── utils/
     └── __init__.py
-tests/                  # Comprehensive test suite
+tests/                  # TDD-structured test suite
+│   ├── test_core/      # Core business logic tests
+│   ├── test_ui/        # UI and navigation tests  
+│   ├── fixtures/       # Test data and app instances
+│   └── helpers/        # Test utility functions
 planning/               # Project planning and feedback
 ```
 
