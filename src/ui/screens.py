@@ -58,6 +58,16 @@ class MainMenuScreen(Screen):
         layout.add_widget(habits_btn)
         
         self.add_widget(layout)
+        
+    def get_navigation_options(self):
+        """Return the navigation options available from this screen."""
+        return [
+            'executive_function',
+            'emotions_management', 
+            'habits',
+            'pomodoro',
+            'routines'
+        ]
 
 
 class ExecutiveFunctionScreen(Screen):
@@ -120,6 +130,14 @@ class ExecutiveFunctionScreen(Screen):
         layout.add_widget(back_btn)
         
         self.add_widget(layout)
+        
+    def get_navigation_options(self):
+        """Return the navigation options available from this screen."""
+        return [
+            'todo_timeline',
+            'pomodoro',
+            'routines'
+        ]
 
 
 class ToDoTimelineScreen(Screen):
@@ -182,6 +200,14 @@ class ToDoTimelineScreen(Screen):
         layout.add_widget(back_btn)
         
         self.add_widget(layout)
+        
+    def get_navigation_options(self):
+        """Return the navigation options available from this screen."""
+        return [
+            'todo_list',
+            'times_dependencies',
+            'timeline_view'
+        ]
 
 
 class ToDoListScreen(Screen):

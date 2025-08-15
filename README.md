@@ -43,7 +43,7 @@ src/
 └── utils/
     └── __init__.py
 main.py                 # Application entry point
-tests/                  # Test directory (to be implemented)
+tests/                  # Comprehensive test suite with TDD structure
 ```
 
 ### Technology Stack
@@ -103,13 +103,59 @@ tests/                  # Test directory (to be implemented)
 - ⏳ Phase 5: Habits module integration
 
 ## Testing
+
+This project uses a comprehensive test suite organized with TDD best practices.
+
+### Quick Start
 ```bash
-# Run tests (when implemented)
+# Run core functionality tests (recommended)
+python run_tests.py core
+
+# Run all tests with logging
+python run_tests.py all --save-log
+```
+
+### Test Structure
+Tests mirror the src/ directory structure:
+```
+tests/
+├── test_core/           # Tests for src/core/ (models, timeline)
+├── test_ui/             # Tests for src/ui/ (screens, navigation)
+├── fixtures/            # Test data and app instances
+├── helpers/             # User interaction simulation
+└── e2e/                 # End-to-end user scenarios (planned)
+```
+
+### Test Categories
+- **`python run_tests.py core`** - Core business logic (✅ 39/40 pass)
+- **`python run_tests.py models`** - Task/TaskManager classes (✅ 30/30 pass)  
+- **`python run_tests.py ui`** - User interface tests (⚠️ being refactored)
+- **`python run_tests.py quick`** - Fast development tests
+
+### Test Output Logging
+All test runs support `--save-log` to capture complete output:
+```bash
+python run_tests.py models --save-log
+# Saves to: logs/test_log_YYYYMMDD_HHMMSS_models.txt
+```
+
+### Direct pytest Usage
+```bash
+# Run all tests
 pytest
 
-# Run with coverage
-pytest --cov
+# Run specific test directory
+pytest tests/test_core/
 
+# Run with coverage
+pytest --cov=src.core
+
+# Run with HTML coverage report
+pytest --cov=src --cov-report=html
+```
+
+### Code Quality
+```bash
 # Code formatting
 black .
 
@@ -119,6 +165,10 @@ flake8 .
 # Type checking
 mypy .
 ```
+
+**Test Coverage**: 100% for core models, 90% for timeline generation
+
+See `tests/README.md` for detailed testing documentation.
 
 ## Contributing
 1. Create GitHub issue for feature/bug

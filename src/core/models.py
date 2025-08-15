@@ -53,7 +53,8 @@ class TaskManager:
                 t.remove_dependency(task)
     
     def get_ready_tasks(self) -> List[Task]:
-        return [task for task in self.tasks if task.can_start() and not task.completed]
+        return [task for task in self.tasks 
+                if task.can_start() and not task.completed and task != self.current_task]
     
     def get_completed_tasks(self) -> List[Task]:
         return [task for task in self.tasks if task.completed]
