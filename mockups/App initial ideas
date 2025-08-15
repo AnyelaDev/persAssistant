@@ -1,5 +1,0 @@
-The app name is not decided yet, Therefore, there must be an editable variable that will be used to change the app title at any time as we iterate until we find a good name. 
-The main screen is in ´1.png´
-This should be a crossplatform app. we should use a framework suitable for this, hopefully something easy to use with GCP or AWS. Probably Flutter, but we are open to suggestions from claude.
-We will implement the navigation and UI first. 
-when the user taps or clicks in "Executive Function" they are taken to the "Executive Function" screen (2.jpg), and so on. 
