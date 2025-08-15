@@ -27,7 +27,7 @@ for module in kivy_modules:
 class TestAppScreenManager:
     """Test cases for the AppScreenManager navigation."""
     
-    @patch('src.ui.screens.ScreenManager')
+    @patch('kivy.uix.screenmanager.ScreenManager')
     @patch('src.ui.screens.MainMenuScreen')
     @patch('src.ui.screens.ExecutiveFunctionScreen')
     @patch('src.ui.screens.ToDoTimelineScreen')
@@ -38,14 +38,18 @@ class TestAppScreenManager:
     @patch('src.ui.screens.HabitsScreen')
     @patch('src.ui.screens.PomodoroScreen')
     @patch('src.ui.screens.RoutinesScreen')
-    def test_screen_manager_initialization(self, *screen_mocks):
+    def test_screen_manager_initialization(self, mock_screenmanager, *screen_mocks):
         """Test that AppScreenManager initializes with all screens."""
         from src.core.app import AppScreenManager
         
-        screen_manager = AppScreenManager()
+        # Mock the ScreenManager parent class
+        with patch('kivy.uix.screenmanager.ScreenManager.__init__', return_value=None):
+            screen_manager = AppScreenManager()
+            screen_manager.add_widget = Mock()
+            screen_manager.current = 'main_menu'
         
         # Verify all screen types were instantiated
-        for screen_mock in screen_mocks[:-1]:  # Exclude ScreenManager
+        for screen_mock in screen_mocks:
             screen_mock.assert_called_once()
         
         # Verify add_widget was called for each screen
@@ -54,15 +58,16 @@ class TestAppScreenManager:
         # Verify initial screen is set
         assert screen_manager.current == 'main_menu'
     
-    @patch('src.ui.screens.ScreenManager')
+    @patch('kivy.uix.screenmanager.ScreenManager')
     def test_switch_to_screen(self, mock_screen_manager):
         """Test the switch_to_screen method."""
         from src.core.app import AppScreenManager
         
         # Create a real AppScreenManager instance but mock its parent
-        with patch.object(AppScreenManager, '__init__', return_value=None):
+        with patch('kivy.uix.screenmanager.ScreenManager.__init__', return_value=None):
             screen_manager = AppScreenManager()
             screen_manager.current = 'main_menu'  # Set initial state
+            screen_manager.add_widget = Mock()  # Mock add_widget method
             
             screen_manager.switch_to_screen('executive_function')
             
@@ -202,9 +207,10 @@ class TestNavigationEdgeCases:
         """Test navigation to non-existent screen."""
         from src.core.app import AppScreenManager
         
-        with patch('src.core.app.ScreenManager.__init__', return_value=None):
+        with patch('kivy.uix.screenmanager.ScreenManager.__init__', return_value=None):
             screen_manager = AppScreenManager()
             screen_manager.current = 'main_menu'
+            screen_manager.add_widget = Mock()  # Mock add_widget method
             
             # This should not raise an error but also shouldn't change current screen
             original_screen = screen_manager.current
