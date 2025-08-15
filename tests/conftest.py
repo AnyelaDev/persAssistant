@@ -10,6 +10,10 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 
 from src.core.models import Task, TaskManager
 
+# Import all fixtures from fixtures module
+from tests.fixtures.app_fixtures import *
+from tests.helpers.test_helpers import *
+
 
 @pytest.fixture
 def sample_task():
