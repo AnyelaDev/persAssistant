@@ -46,27 +46,45 @@ def run_tests(test_type="all", verbose=True, save_log=False):
             "description": "Run all tests"
         },
         "core": {
-            "path": "tests/test_models.py tests/test_timeline.py",
+            "path": "tests/test_core/test_models.py tests/test_core/test_timeline.py",
             "description": "Run core functionality tests (models and timeline)",
             "extra_args": ["--cov=src.core"]
         },
         "models": {
-            "path": "tests/test_models.py",
+            "path": "tests/test_core/test_models.py",
             "description": "Run only model tests",
             "extra_args": ["--cov=src.core.models"]
         },
         "ui": {
-            "path": "tests/test_ui_components.py tests/test_navigation.py",
+            "path": "tests/test_ui/test_ui_components.py tests/test_ui/test_navigation.py",
             "description": "Run UI and navigation tests"
         },
         "timeline": {
-            "path": "tests/test_timeline.py",
+            "path": "tests/test_core/test_timeline.py",
             "description": "Run timeline generation tests"
         },
         "quick": {
-            "path": "tests/test_models.py",
+            "path": "tests/test_core/test_models.py",
             "description": "Quick test run (models only)",
             "extra_args": ["--tb=line", "-q"]
+        },
+        "test_core": {
+            "path": "tests/test_core/",
+            "description": "Run all core module tests",
+            "extra_args": ["--cov=src.core"]
+        },
+        "test_ui": {
+            "path": "tests/test_ui/",
+            "description": "Run all UI module tests"
+        },
+        "unit": {
+            "path": "tests/test_core/",
+            "description": "Run unit tests (business logic only)",
+            "extra_args": ["--cov=src.core"]
+        },
+        "integration": {
+            "path": "tests/test_ui/",
+            "description": "Run integration tests (UI interactions)"
         }
     }
     
@@ -105,7 +123,7 @@ def main():
         "test_type", 
         nargs="?", 
         default="core",
-        choices=["all", "core", "models", "ui", "timeline", "quick"],
+        choices=["all", "core", "models", "ui", "timeline", "quick", "test_core", "test_ui", "unit", "integration"],
         help="Type of tests to run (default: core)"
     )
     parser.add_argument(

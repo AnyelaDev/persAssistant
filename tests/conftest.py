@@ -5,8 +5,8 @@ import pytest
 import sys
 import os
 
-# Add src directory to path for imports
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src'))
+# Add project root to path for relative imports
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 
 from src.core.models import Task, TaskManager
 
