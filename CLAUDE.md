@@ -7,7 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 This is a cross-platform personal assistant application built with Kivy. The project has completed **Phase 1 - Core MVP** and is now in **Phase 2 - Bug fixes and feature refinements** with 8 active GitHub issues to address.
 
 ### Current Status: Phase 2 Development
-- ✅ Phase 1: Core MVP (Navigation + Basic ToDo Timeline) - **COMPLETED**
+- 🧪 Phase 1: Core MVP (Navigation + Basic ToDo Timeline) - **IN MANUAL TESTING**
 - 🔄 Phase 2: Bug fixes and feature refinements - **IN PROGRESS**
 - ⏳ Phase 3: Advanced ToDo management with AI grooming
 - ⏳ Phase 4: Emotions Management module
@@ -24,7 +24,11 @@ This project follows a strict development workflow as outlined in the "Workflow 
    - Create GitHub issues for features and bugs
    - Each issue gets its own branch and PR
    - Make smaller, frequent commits in issue branches for better tracking
-
+   - **When closing GitHub issues**: Update `planning/Issues and Planning.md` to mark the issue as completed:
+     - Add "✅ **COMPLETED**" to the issue title
+     - Change all acceptance criteria checkboxes from `[ ]` to `[x]`
+     - Add completion status line with relevant details
+     - Update the priority/timeline sections to reflect completion
 3. **Testing Strategy**: Implement automated tests after merges, including:
    - Unit tests for all code
    - Integration tests when appropriate
