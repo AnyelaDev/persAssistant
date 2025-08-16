@@ -5,13 +5,30 @@ from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
 from kivy.uix.scrollview import ScrollView
 from kivy.uix.gridlayout import GridLayout
+from kivy.graphics import Color, Rectangle
 from src.core.config import AppConfig
+from src.ui.color_palette import ColorPalette
+
+
+def set_screen_background(screen, color=None):
+    """Helper function to set background color for any screen."""
+    if color is None:
+        color = ColorPalette.BACKGROUND_PRIMARY
+    
+    with screen.canvas.before:
+        Color(*color)
+        screen.rect = Rectangle(size=screen.size, pos=screen.pos)
+    screen.bind(size=lambda instance, value: setattr(screen.rect, 'size', instance.size))
+    screen.bind(pos=lambda instance, value: setattr(screen.rect, 'pos', instance.pos))
 
 
 class MainMenuScreen(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.name = 'main_menu'
+        
+        # Set screen background color
+        set_screen_background(self)
         
         layout = BoxLayout(orientation='vertical', padding=20, spacing=15)
         
@@ -21,7 +38,7 @@ class MainMenuScreen(Screen):
             size_hint_y=None,
             height=80,
             font_size=32,
-            color=(0.2, 0.2, 0.2, 1)
+            color=ColorPalette.TEXT_PRIMARY
         )
         layout.add_widget(title)
         
@@ -31,7 +48,7 @@ class MainMenuScreen(Screen):
             size_hint_y=None,
             height=120,
             font_size=20,
-            background_color=(0.8, 0.9, 0.7, 1)
+            background_color=ColorPalette.BUTTON_PRIMARY
         )
         executive_btn.bind(on_press=lambda x: self.manager.switch_to_screen('executive_function'))
         
@@ -40,7 +57,7 @@ class MainMenuScreen(Screen):
             size_hint_y=None,
             height=120,
             font_size=20,
-            background_color=(0.7, 0.9, 0.8, 1)
+            background_color=ColorPalette.BUTTON_SECONDARY
         )
         emotions_btn.bind(on_press=lambda x: self.manager.switch_to_screen('emotions_management'))
         
@@ -49,7 +66,7 @@ class MainMenuScreen(Screen):
             size_hint_y=None,
             height=120,
             font_size=20,
-            background_color=(0.7, 0.8, 0.9, 1)
+            background_color=ColorPalette.BUTTON_TERTIARY
         )
         habits_btn.bind(on_press=lambda x: self.manager.switch_to_screen('habits'))
         
@@ -75,6 +92,9 @@ class ExecutiveFunctionScreen(Screen):
         super().__init__(**kwargs)
         self.name = 'executive_function'
         
+        # Set screen background color
+        set_screen_background(self)
+        
         layout = BoxLayout(orientation='vertical', padding=20, spacing=15)
         
         # Title
@@ -83,7 +103,7 @@ class ExecutiveFunctionScreen(Screen):
             size_hint_y=None,
             height=80,
             font_size=28,
-            color=(0.2, 0.2, 0.2, 1)
+            color=ColorPalette.TEXT_PRIMARY
         )
         layout.add_widget(title)
         
@@ -93,7 +113,7 @@ class ExecutiveFunctionScreen(Screen):
             size_hint_y=None,
             height=120,
             font_size=20,
-            background_color=(0.8, 0.9, 0.7, 1)
+            background_color=ColorPalette.BUTTON_PRIMARY
         )
         todo_timeline_btn.bind(on_press=lambda x: self.manager.switch_to_screen('todo_timeline'))
         
@@ -102,7 +122,7 @@ class ExecutiveFunctionScreen(Screen):
             size_hint_y=None,
             height=120,
             font_size=20,
-            background_color=(0.7, 0.9, 0.8, 1)
+            background_color=ColorPalette.BUTTON_SECONDARY
         )
         pomodoro_btn.bind(on_press=lambda x: self.manager.switch_to_screen('pomodoro'))
         
@@ -111,7 +131,7 @@ class ExecutiveFunctionScreen(Screen):
             size_hint_y=None,
             height=120,
             font_size=20,
-            background_color=(0.7, 0.8, 0.9, 1)
+            background_color=ColorPalette.BUTTON_TERTIARY
         )
         routines_btn.bind(on_press=lambda x: self.manager.switch_to_screen('routines'))
         
@@ -120,7 +140,7 @@ class ExecutiveFunctionScreen(Screen):
             text='Back',
             size_hint_y=None,
             height=50,
-            background_color=(0.9, 0.9, 0.9, 1)
+            background_color=ColorPalette.BUTTON_NEUTRAL
         )
         back_btn.bind(on_press=lambda x: self.manager.switch_to_screen('main_menu'))
         
@@ -145,6 +165,9 @@ class ToDoTimelineScreen(Screen):
         super().__init__(**kwargs)
         self.name = 'todo_timeline'
         
+        # Set screen background color
+        set_screen_background(self)
+        
         layout = BoxLayout(orientation='vertical', padding=20, spacing=15)
         
         # Title
@@ -153,7 +176,7 @@ class ToDoTimelineScreen(Screen):
             size_hint_y=None,
             height=80,
             font_size=28,
-            color=(0.2, 0.2, 0.2, 1)
+            color=ColorPalette.TEXT_PRIMARY
         )
         layout.add_widget(title)
         
@@ -163,7 +186,7 @@ class ToDoTimelineScreen(Screen):
             size_hint_y=None,
             height=120,
             font_size=20,
-            background_color=(0.8, 0.9, 0.7, 1)
+            background_color=ColorPalette.BUTTON_PRIMARY
         )
         todo_list_btn.bind(on_press=lambda x: self.manager.switch_to_screen('todo_list'))
         
@@ -172,7 +195,7 @@ class ToDoTimelineScreen(Screen):
             size_hint_y=None,
             height=120,
             font_size=20,
-            background_color=(0.7, 0.9, 0.8, 1)
+            background_color=ColorPalette.BUTTON_SECONDARY
         )
         times_deps_btn.bind(on_press=lambda x: self.manager.switch_to_screen('times_dependencies'))
         
@@ -181,7 +204,7 @@ class ToDoTimelineScreen(Screen):
             size_hint_y=None,
             height=120,
             font_size=20,
-            background_color=(0.7, 0.8, 0.9, 1)
+            background_color=ColorPalette.BUTTON_TERTIARY
         )
         timeline_btn.bind(on_press=lambda x: self.manager.switch_to_screen('timeline_view'))
         
@@ -190,7 +213,7 @@ class ToDoTimelineScreen(Screen):
             text='Back',
             size_hint_y=None,
             height=50,
-            background_color=(0.9, 0.9, 0.9, 1)
+            background_color=ColorPalette.BUTTON_NEUTRAL
         )
         back_btn.bind(on_press=lambda x: self.manager.switch_to_screen('executive_function'))
         
@@ -215,6 +238,9 @@ class ToDoListScreen(Screen):
         super().__init__(**kwargs)
         self.name = 'todo_list'
         
+        # Set screen background color
+        set_screen_background(self)
+        
         layout = BoxLayout(orientation='vertical', padding=20, spacing=15)
         
         # Title
@@ -223,7 +249,7 @@ class ToDoListScreen(Screen):
             size_hint_y=None,
             height=60,
             font_size=28,
-            color=(0.2, 0.2, 0.2, 1)
+            color=ColorPalette.TEXT_PRIMARY
         )
         layout.add_widget(title)
         
@@ -233,7 +259,7 @@ class ToDoListScreen(Screen):
             size_hint_y=None,
             height=30,
             font_size=16,
-            color=(0.4, 0.4, 0.4, 1)
+            color=ColorPalette.TEXT_SECONDARY
         )
         layout.add_widget(instruction)
         
@@ -242,7 +268,7 @@ class ToDoListScreen(Screen):
             hint_text='<Text Input>',
             multiline=True,
             font_size=16,
-            background_color=(0.7, 0.9, 0.8, 1)
+            background_color=ColorPalette.BUTTON_SECONDARY
         )
         layout.add_widget(self.text_input)
         
@@ -253,7 +279,7 @@ class ToDoListScreen(Screen):
             text='Groom my list',
             size_hint_y=None,
             height=50,
-            background_color=(0.7, 0.9, 0.8, 1)
+            background_color=ColorPalette.BUTTON_SECONDARY
         )
         groom_btn.bind(on_press=self.groom_list)
         
@@ -261,7 +287,7 @@ class ToDoListScreen(Screen):
             text='Next',
             size_hint_y=None,
             height=50,
-            background_color=(0.7, 0.8, 0.9, 1)
+            background_color=ColorPalette.BUTTON_TERTIARY
         )
         next_btn.bind(on_press=lambda x: self.manager.switch_to_screen('times_dependencies'))
         
@@ -275,7 +301,7 @@ class ToDoListScreen(Screen):
             text='Back',
             size_hint_y=None,
             height=50,
-            background_color=(0.9, 0.9, 0.9, 1)
+            background_color=ColorPalette.BUTTON_NEUTRAL
         )
         back_btn.bind(on_press=lambda x: self.manager.switch_to_screen('todo_timeline'))
         layout.add_widget(back_btn)
@@ -298,6 +324,9 @@ class TimesDependenciesScreen(Screen):
         super().__init__(**kwargs)
         self.name = 'times_dependencies'
         
+        # Set screen background color
+        set_screen_background(self)
+        
         layout = BoxLayout(orientation='vertical', padding=20, spacing=15)
         
         # Title
@@ -306,7 +335,7 @@ class TimesDependenciesScreen(Screen):
             size_hint_y=None,
             height=80,
             font_size=24,
-            color=(0.2, 0.2, 0.2, 1)
+            color=ColorPalette.TEXT_PRIMARY
         )
         layout.add_widget(title)
         
@@ -316,7 +345,7 @@ class TimesDependenciesScreen(Screen):
             size_hint_y=None,
             height=30,
             font_size=16,
-            color=(0.4, 0.4, 0.4, 1)
+            color=ColorPalette.TEXT_SECONDARY
         )
         layout.add_widget(subtitle)
         
@@ -340,7 +369,7 @@ class TimesDependenciesScreen(Screen):
                 size_hint_y=None,
                 height=30,
                 font_size=14,
-                color=(0.2, 0.2, 0.2, 1)
+                color=ColorPalette.TEXT_PRIMARY
             )
             
             time_input = TextInput(
@@ -365,7 +394,7 @@ class TimesDependenciesScreen(Screen):
             item_layout.canvas.before.clear()
             from kivy.graphics import Color, Rectangle
             with item_layout.canvas.before:
-                Color(0.7, 0.9, 0.8, 1)
+                Color(*ColorPalette.BUTTON_SECONDARY)
                 item_layout.bg_rect = Rectangle(size=item_layout.size, pos=item_layout.pos)
             
             item_layout.bind(size=self.update_bg, pos=self.update_bg)
@@ -381,14 +410,14 @@ class TimesDependenciesScreen(Screen):
             text='Groom my list',
             size_hint_y=None,
             height=50,
-            background_color=(0.7, 0.9, 0.8, 1)
+            background_color=ColorPalette.BUTTON_SECONDARY
         )
         
         next_btn = Button(
             text='Next',
             size_hint_y=None,
             height=50,
-            background_color=(0.7, 0.8, 0.9, 1)
+            background_color=ColorPalette.BUTTON_TERTIARY
         )
         next_btn.bind(on_press=lambda x: self.manager.switch_to_screen('timeline_view'))
         
@@ -402,7 +431,7 @@ class TimesDependenciesScreen(Screen):
             text='Back',
             size_hint_y=None,
             height=50,
-            background_color=(0.9, 0.9, 0.9, 1)
+            background_color=ColorPalette.BUTTON_NEUTRAL
         )
         back_btn.bind(on_press=lambda x: self.manager.switch_to_screen('todo_list'))
         layout.add_widget(back_btn)
@@ -419,6 +448,9 @@ class TimelineViewScreen(Screen):
         super().__init__(**kwargs)
         self.name = 'timeline_view'
         
+        # Set screen background color
+        set_screen_background(self)
+        
         layout = BoxLayout(orientation='vertical', padding=20, spacing=15)
         
         # Title
@@ -427,7 +459,7 @@ class TimelineViewScreen(Screen):
             size_hint_y=None,
             height=60,
             font_size=28,
-            color=(0.2, 0.2, 0.2, 1)
+            color=ColorPalette.TEXT_SECONDARY
         )
         layout.add_widget(title)
         
@@ -440,8 +472,8 @@ class TimelineViewScreen(Screen):
         
         # Red and gray sections
         from kivy.graphics import Color, Rectangle
-        red_section = Label(text='<Start\ntime>', size_hint_x=0.3, font_size=10)
-        gray_section = Label(text='<Finish\ntime>', size_hint_x=0.7, font_size=10)
+        red_section = Label(text='<Start\ntime>', size_hint_x=0.3, font_size=10, color=ColorPalette.TEXT_PRIMARY)
+        gray_section = Label(text='<Finish\ntime>', size_hint_x=0.7, font_size=10, color=ColorPalette.TEXT_PRIMARY)
         
         timeline_bar.add_widget(red_section)
         timeline_bar.add_widget(gray_section)
@@ -460,12 +492,13 @@ class TimelineViewScreen(Screen):
             text='Now',
             size_hint_x=None,
             width=80,
-            font_size=18
+            font_size=18,
+            color=ColorPalette.TEXT_PRIMARY
         )
         
         task_info = BoxLayout(orientation='vertical')
-        task_name = Label(text='<To do item n>', font_size=16)
-        task_next = Label(text='Next: <Todo item m>', font_size=14)
+        task_name = Label(text='<To do item n>', font_size=16, color=ColorPalette.TEXT_PRIMARY)
+        task_next = Label(text='Next: <Todo item m>', font_size=14, color=ColorPalette.TEXT_SECONDARY)
         task_info.add_widget(task_name)
         task_info.add_widget(task_next)
         
@@ -473,7 +506,8 @@ class TimelineViewScreen(Screen):
             text='Time left:\n<time in\nhh:mm>',
             size_hint_x=None,
             width=100,
-            font_size=12
+            font_size=12,
+            color=ColorPalette.TEXT_SECONDARY
         )
         
         current_task.add_widget(now_label)
@@ -486,7 +520,8 @@ class TimelineViewScreen(Screen):
             text='in parallel:',
             size_hint_y=None,
             height=30,
-            font_size=16
+            font_size=16,
+            color=ColorPalette.TEXT_PRIMARY
         )
         layout.add_widget(parallel_label)
         
@@ -499,9 +534,9 @@ class TimelineViewScreen(Screen):
                 padding=10
             )
             
-            task_label = Label(text=f'<To do item n+{i+1}>', font_size=14)
-            time_label = Label(text='Time: <hh:mm>', font_size=12)
-            deps_label = Label(text='Dependencies: <input text>', font_size=12)
+            task_label = Label(text=f'<To do item n+{i+1}>', font_size=14, color=ColorPalette.TEXT_PRIMARY)
+            time_label = Label(text='Time: <hh:mm>', font_size=12, color=ColorPalette.TEXT_SECONDARY)
+            deps_label = Label(text='Dependencies: <input text>', font_size=12, color=ColorPalette.TEXT_SECONDARY)
             
             parallel_task.add_widget(task_label)
             parallel_task.add_widget(time_label)
@@ -518,12 +553,14 @@ class TimelineViewScreen(Screen):
             text='ToDo List',
             size_hint_y=None,
             height=40,
-            font_size=20
+            font_size=20,
+            color=ColorPalette.TEXT_PRIMARY
         )
         todo_section.add_widget(todo_title)
         
         todo_content = Label(
-            text='<Ordered List of groomed\nToDos>'
+            text='<Ordered List of groomed\nToDos>',
+            color=ColorPalette.TEXT_SECONDARY
         )
         todo_section.add_widget(todo_content)
         
@@ -534,7 +571,7 @@ class TimelineViewScreen(Screen):
             text='Home',
             size_hint_y=None,
             height=50,
-            background_color=(0.7, 0.8, 0.9, 1)
+            background_color=ColorPalette.BUTTON_TERTIARY
         )
         home_btn.bind(on_press=lambda x: self.manager.switch_to_screen('main_menu'))
         layout.add_widget(home_btn)
@@ -544,7 +581,7 @@ class TimelineViewScreen(Screen):
             text='Back',
             size_hint_y=None,
             height=50,
-            background_color=(0.9, 0.9, 0.9, 1)
+            background_color=ColorPalette.BUTTON_NEUTRAL
         )
         back_btn.bind(on_press=lambda x: self.manager.switch_to_screen('times_dependencies'))
         layout.add_widget(back_btn)
@@ -557,6 +594,9 @@ class EmotionsManagementScreen(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.name = 'emotions_management'
+        
+        # Set screen background color
+        set_screen_background(self)
         
         layout = BoxLayout(orientation='vertical', padding=20, spacing=20)
         
@@ -576,7 +616,7 @@ class EmotionsManagementScreen(Screen):
             text='Back',
             size_hint_y=None,
             height=50,
-            background_color=(0.9, 0.9, 0.9, 1)
+            background_color=ColorPalette.BUTTON_NEUTRAL
         )
         back_btn.bind(on_press=lambda x: self.manager.switch_to_screen('main_menu'))
         
@@ -591,6 +631,9 @@ class HabitsScreen(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.name = 'habits'
+        
+        # Set screen background color
+        set_screen_background(self)
         
         layout = BoxLayout(orientation='vertical', padding=20, spacing=20)
         
@@ -610,7 +653,7 @@ class HabitsScreen(Screen):
             text='Back',
             size_hint_y=None,
             height=50,
-            background_color=(0.9, 0.9, 0.9, 1)
+            background_color=ColorPalette.BUTTON_NEUTRAL
         )
         back_btn.bind(on_press=lambda x: self.manager.switch_to_screen('main_menu'))
         
@@ -625,6 +668,9 @@ class PomodoroScreen(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.name = 'pomodoro'
+        
+        # Set screen background color
+        set_screen_background(self)
         
         layout = BoxLayout(orientation='vertical', padding=20, spacing=20)
         
@@ -644,7 +690,7 @@ class PomodoroScreen(Screen):
             text='Back',
             size_hint_y=None,
             height=50,
-            background_color=(0.9, 0.9, 0.9, 1)
+            background_color=ColorPalette.BUTTON_NEUTRAL
         )
         back_btn.bind(on_press=lambda x: self.manager.switch_to_screen('executive_function'))
         
@@ -659,6 +705,9 @@ class RoutinesScreen(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.name = 'routines'
+        
+        # Set screen background color
+        set_screen_background(self)
         
         layout = BoxLayout(orientation='vertical', padding=20, spacing=20)
         
@@ -678,7 +727,7 @@ class RoutinesScreen(Screen):
             text='Back',
             size_hint_y=None,
             height=50,
-            background_color=(0.9, 0.9, 0.9, 1)
+            background_color=ColorPalette.BUTTON_NEUTRAL
         )
         back_btn.bind(on_press=lambda x: self.manager.switch_to_screen('executive_function'))
         
