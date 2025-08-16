@@ -28,19 +28,21 @@ The Timeline screen currently has a "Next" button that doesn't lead anywhere mea
 
 ---
 
-### Issue #6: Fix Background Color Across All Screens
+### ✅ **COMPLETED** Issue #6: Fix Background Color Across All Screens
 **Title:** Lighten background colors for better readability
 
 **Description:**
 The current background color scheme is too dark across all screens, making the app difficult to read and use.
 
 **Acceptance Criteria:**
-- [ ] Review and update background colors in all screens
-- [ ] Ensure good contrast ratio for accessibility
-- [ ] Maintain design consistency with mockups
-- [ ] Test on different screen sizes and devices
+- [x] Review and update background colors in all screens
+- [x] Ensure good contrast ratio for accessibility
+- [x] Maintain design consistency with mockups
+- [x] Test on different screen sizes and devices
 
 **Labels:** bug, ui/ux, design
+
+**Completion Status:** ✅ COMPLETED - Implemented centralized ColorPalette class with lighter, more accessible colors. Created clean architecture with app properties for .kv file integration. Fixed screen backgrounds and improved text contrast. All tests passing.
 
 ---
 
