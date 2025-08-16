@@ -7,9 +7,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 This is a cross-platform personal assistant application built with Kivy. The project has completed **Phase 1 - Core MVP** and is now in **Phase 2 - Bug fixes and feature refinements** with 8 active GitHub issues to address.
 
 ### Current Status: Phase 2 Development
-- 🧪 Phase 1: Core MVP (Navigation + Basic ToDo Timeline) - **IN MANUAL TESTING**
-- 🔄 Phase 2: Bug fixes and feature refinements - **IN PROGRESS**
-- ⏳ Phase 3: Advanced ToDo management with AI grooming
+- ✅ Phase 1: Core MVP (Navigation + Basic ToDo Timeline) - **COMPLETED**
+- ✅ Phase 2: Bug fixes, color themes, and AI-powered grooming - **COMPLETED**
+- 🔄 Phase 3: Advanced ToDo management with task dependencies - **NEXT**
 - ⏳ Phase 4: Emotions Management module
 - ⏳ Phase 5: Habits module integration
 
@@ -103,7 +103,10 @@ The project uses a comprehensive TDD-structured test suite:
 ### Technology Stack
 - **GUI Framework**: Kivy 2.3.1
 - **Language**: Python 3.10+
-- **Testing**: pytest, pytest-cov
+- **AI Integration**: HuggingFace Inference API (Mistral-7B-Instruct)
+- **Environment Management**: python-dotenv
+- **HTTP Client**: requests (with retry logic and timeout handling)
+- **Testing**: pytest, pytest-cov, responses (HTTP mocking)
 - **Code Quality**: black, flake8, mypy, pre-commit
 
 ## Current Architecture
@@ -111,16 +114,22 @@ The project uses a comprehensive TDD-structured test suite:
 ### Project Structure
 ```
 src/
+├── ai/
+│   ├── config.py       # AI service configuration and API key management
+│   ├── grooming_service.py  # AI-powered todo list grooming with fallback
+│   └── prompts.py      # Structured prompts and template management
 ├── core/
-│   ├── app.py          # Main application and screen manager
-│   ├── config.py       # App configuration (configurable title)
+│   ├── app.py          # Main application and screen manager with color properties
+│   ├── config.py       # App configuration and environment variable loading
 │   └── models.py       # Data models (Task, TaskManager)
 ├── ui/
-│   ├── screens.py      # All screen implementations
-│   └── main.kv         # Legacy Kivy layout file
+│   ├── color_palette.py # Centralized color theme management
+│   ├── screens.py      # All screen implementations with AI integration
+│   └── main.kv         # Legacy Kivy layout file with app property colors
 └── utils/
     └── __init__.py
 tests/                  # TDD-structured test suite
+│   ├── test_ai/        # AI functionality tests with golden set validation
 │   ├── test_core/      # Core business logic tests
 │   ├── test_ui/        # UI and navigation tests  
 │   ├── fixtures/       # Test data and app instances
@@ -128,15 +137,27 @@ tests/                  # TDD-structured test suite
 planning/               # Project planning and feedback
 ```
 
-### Implemented Features (Phase 1)
+### Implemented Features (Phase 1 & 2)
+
+#### Phase 1 - Core MVP
 - **Navigation System**: ScreenManager-based navigation between all modules
 - **Executive Function Module**: Complete ToDo Timeline workflow
-  - ToDo List screen with grooming functionality (basic numbering)
+  - ToDo List screen with basic grooming functionality
   - Times and Dependencies input screen
   - Timeline visualization screen
 - **Configurable App Title**: Easy branding changes via AppConfig
 - **Data Models**: Task and TaskManager classes for task management
 - **Placeholder Modules**: Emotions Management, Habits, Pomodoro, Routines
+
+#### Phase 2 - Enhanced Features
+- **AI-Powered Todo Grooming**: Intelligent task optimization using HuggingFace API
+  - Task clarification and enhancement
+  - Duplicate detection and removal
+  - Priority inference from context
+  - Robust error handling with fallback
+- **Centralized Color Management**: ColorPalette class with app property integration
+- **Improved UI/UX**: Lighter backgrounds, better contrast, consistent theming
+- **Comprehensive Testing**: AI integration tests with golden set validation
 
 ## Planning and Issue Tracking
 
@@ -152,10 +173,25 @@ For detailed information about current development tasks and planning:
 - **Architecture Notes**: Current implementation details and next steps
 
 ### 🔍 Quick Reference for Development
-- **Grooming Functionality**: Located in `src/ui/screens.py` - `ToDoListScreen.groom_list()` method (basic numbering only)
+
+#### Core Components
+- **AI Grooming Service**: `src/ai/grooming_service.py` - Main AI integration with HuggingFace
+- **AI Configuration**: `src/ai/config.py` - API key management and service selection
+- **Prompts**: `src/ai/prompts.py` - Structured prompt templates for AI models
+- **UI Integration**: `src/ui/screens.py` - `ToDoListScreen.groom_list()` method with loading states
 - **Data Models**: `src/core/models.py` - Task and TaskManager classes
-- **Current Data Flow**: ToDo List → Times & Dependencies → Timeline (needs dynamic data persistence)
-- **Testing Structure**: `/tests/` directory with existing test framework setup
+- **Color Management**: `src/ui/color_palette.py` - Centralized theme colors
+
+#### AI Development Setup
+- **Environment**: Copy `.env.template` to `.env` and add HuggingFace API key
+- **Testing**: `pytest tests/test_ai/ -v` for AI functionality validation
+- **Fallback**: Works without API key using basic grooming functionality
+- **Error Handling**: Graceful degradation with retry logic and timeouts
+
+#### Data Flow
+- ToDo List (AI groomed) → Times & Dependencies → Timeline (needs dynamic data persistence)
+- AI Service: Input text → HuggingFace API → JSON response → Formatted tasks
+- Fallback: Input text → Basic processing → Formatted tasks
 
 ### 📊 Development Status
 - Use `gh issue list` to check current GitHub issues status

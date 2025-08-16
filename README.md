@@ -14,9 +14,15 @@ A cross-platform personal productivity application built with Kivy, designed to 
 
 #### ✅ Executive Function Module
 **ToDo Timeline Sub-Module:**
-- **To-Do List Screen**: Text input for creating task lists with "Groom my list" functionality
+- **To-Do List Screen**: Text input for creating task lists with AI-powered "Groom my list" functionality
 - **Times and Dependencies Screen**: Interface for setting time estimates and task dependencies
 - **Timeline View Screen**: Visual timeline displaying current tasks, parallel tasks, and ordered task list
+
+**✨ NEW: AI-Powered Todo Grooming:**
+- Intelligent task clarification and organization using AI
+- Duplicate removal and task breakdown
+- Priority detection and logical ordering
+- Graceful fallback to basic grooming when AI unavailable
 
 #### ✅ Application Architecture
 - **Configurable App Title**: Easy-to-modify app branding through AppConfig class
@@ -33,17 +39,23 @@ A cross-platform personal productivity application built with Kivy, designed to 
 ### Project Structure
 ```
 src/
+├── ai/
+│   ├── config.py       # AI service configuration and API key management
+│   ├── grooming_service.py  # AI-powered todo list grooming
+│   └── prompts.py      # Structured prompts for AI models
 ├── core/
-│   ├── app.py          # Main application and screen manager
-│   ├── config.py       # App configuration settings
+│   ├── app.py          # Main application and screen manager  
+│   ├── config.py       # App configuration and environment variables
 │   └── models.py       # Data models (Task, TaskManager)
 ├── ui/
+│   ├── color_palette.py # Centralized color theme management
 │   ├── screens.py      # All screen implementations
 │   └── main.kv         # Kivy layout file (legacy)
 └── utils/
     └── __init__.py
 main.py                 # Application entry point
 tests/                  # Comprehensive test suite with TDD structure
+├── test_ai/           # AI functionality tests with golden set validation
 ```
 
 ### Technology Stack
@@ -77,7 +89,22 @@ tests/                  # Comprehensive test suite with TDD structure
    pip install -r requirements-dev.txt
    ```
 
-4. **Run the application**:
+4. **Set up AI features (optional)**:
+   ```bash
+   # Copy environment template
+   cp .env.template .env
+   
+   # Edit .env file and add your HuggingFace API key
+   # Get free API key from: https://huggingface.co/settings/tokens
+   nano .env  # or use your preferred editor
+   ```
+   
+   Add to `.env`:
+   ```env
+   HF_API_KEY=your_actual_huggingface_api_key_here
+   ```
+
+5. **Run the application**:
    ```bash
    python main.py
    ```
@@ -95,10 +122,31 @@ tests/                  # Comprehensive test suite with TDD structure
 - **Pomodoro**: Time management and focus sessions
 - **Routines**: Daily routine planning and execution
 
+## AI Features
+
+### Todo List Grooming
+The app includes intelligent AI-powered todo list grooming that:
+
+- **Clarifies vague tasks**: Transforms "do stuff" into actionable items
+- **Removes duplicates**: Automatically detects and consolidates similar tasks
+- **Breaks down large tasks**: Splits complex tasks into manageable sub-tasks
+- **Detects priorities**: Identifies urgent/high-priority tasks from context
+- **Improves descriptions**: Enhances task clarity and specificity
+
+### AI Services Supported
+- **HuggingFace** (Primary): Uses Mistral-7B-Instruct model via free Inference API
+- **OpenAI** (Planned): GPT integration for premium features
+- **Anthropic** (Planned): Claude integration option
+
+### Fallback System
+- **Basic grooming**: Works without AI - numbering, deduplication, formatting
+- **Error handling**: Graceful degradation when AI services unavailable
+- **Offline capability**: Full functionality without internet connection
+
 ## Development Status
 - ✅ Phase 1: Core MVP (Navigation + Basic ToDo Timeline)
-- 🔄 Phase 2: Bug fixes and feature refinements
-- ⏳ Phase 3: Advanced ToDo management with AI grooming
+- ✅ Phase 2: Bug fixes and AI-powered grooming
+- ⏳ Phase 3: Advanced ToDo management with task dependencies
 - ⏳ Phase 4: Emotions Management module
 - ⏳ Phase 5: Habits module integration
 
@@ -131,6 +179,7 @@ tests/
 - **`python run_tests.py models`** - Task/TaskManager classes (✅ 30/30 pass)  
 - **`python run_tests.py ui`** - User interface tests (⚠️ being refactored)
 - **`python run_tests.py quick`** - Fast development tests
+- **`pytest tests/test_ai/ -v`** - AI grooming functionality with golden set validation (✅ 17/17 pass)
 
 ### Test Output Logging
 All test runs support `--save-log` to capture complete output:
