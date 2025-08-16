@@ -1,3 +1,112 @@
+# Feedback received number 2: PR 18
+
+## Summary of Contributions
+
+The PR consists of **14 commits** merged on August 15, 2025, with contributions on August 14 and 15, including:
+
+* **Phase 1 – Core MVP Features Completed**
+* Adding **manual test results and issues**
+* Incorporating “feedback from ‘architect’ ChatGPT 5”
+* Updating plans, modifying documentation, removing duplicates
+* Initial **test infrastructure setup**, including logging output and navigation mocks
+* Structural improvements toward a **clean 3-layer architecture (UI → Business → Data)**
+* Building **behavior-focused UI tests**, resembling E2E user scenario tests
+* Test restructuring and documentation enhancements
+* Removing legacy tests
+
+These indicate a thoughtful, iterative approach toward laying the foundation for testing—moving from basic infrastructure to structured test cases, E2E scenarios, and architectural refinement.
+
+---
+
+## Strengths Observed
+
+### 1. **Progressive Test Infrastructure**
+
+* Early work shows the establishment of testing mechanisms—logging outputs, mocked navigation—setting the groundwork for effective testing.
+* The evolving test structure (via "test restructuring is fully functional") signals maturation and adaptability.
+
+### 2. **Layered Architecture & Separation of Concerns**
+
+* Refactoring to a three-layer architecture (UI → Business → Data) enhances testability by isolating business logic and facilitating targeted unit tests.
+* This aligns with clean-design principles and supports modular, maintainable tests.
+
+### 3. **E2E / Behavior-Focused Tests**
+
+* Adding tests that simulate actual user workflows provides high-value coverage and helps validate core navigation and UI behavior.
+
+### 4. **Documentation and Planning Updates**
+
+* Documentation aligning with test refactors shows awareness of maintainability and clarity for future contributors.
+* Plan updates demonstrate process awareness and intention behind test evolution.
+
+---
+
+## Areas for Improvement & Next Steps
+
+### 1. **Coverage Scope & Target Areas**
+
+* It's unclear how thoroughly key components (e.g., `TaskManager`, `Timeline`, error handling) are being tested.
+* Next steps:
+
+  * Implement targeted unit tests for `TaskManager` (CRUD operations, dependency handling, circular dependencies).
+  * Add tests for navigation flows and screen transitions under normal and invalid input.
+
+### 2. **Edge-Case and Error Handling Tests**
+
+* Current tests likely cover typical flows; they should also simulate:
+
+  * Invalid inputs (e.g., null or malformed tasks)
+  * Navigation failure scenarios
+  * AI integration fallback (simulating Claude failures or timeouts)
+
+### 3. **CI/CD Integration**
+
+* There's no visible evidence that tests are integrated into an automated pipeline.
+* Recommendation: Set up GitHub Actions (or similar) to run tests on every PR—this ensures test integrity and early detection of regressions.
+
+### 4. **Quantitative Test Coverage & Metrics**
+
+* No coverage reports are mentioned.
+* Suggest adding coverage measurement (e.g., via `coverage.py` or similar), with thresholds to enforce baseline coverage.
+
+### 5. **Expanding Documentation**
+
+* Next documentation items:
+
+  * A testing overview in README
+  * Guidelines for writing and structuring new tests
+  * Clear mapping: which tests cover which components/features
+
+### 6. **Behavior-Driven Testing Clarity**
+
+* The E2E tests are promising, but aligning them with specific user stories (e.g., "As a user, I can add a task with dependencies and see it on the timeline") will help anchor tests to product behavior and guide future proofing.
+
+---
+
+## Final Thoughts
+
+Overall, for four hours of focused effort:
+
+* The junior engineer **delivered a solid test foundation**, moving from basic infrastructure to structured layering and E2E behavior tests.
+* Their work displays strong adherence to evolving architecture, documentation, and planning.
+* To elevate, the focus should shift toward **deeper coverage**, error scenario handling, CI enforcement, and enriched documentation.
+
+This PR reflects excellent initiative and direction. With continued iteration and added scope, these test efforts will significantly bolster robustness as AI features and complexity grow.
+
+---
+
+## Recommendations Summary
+
+| Focus Area           | Next Steps                                               |
+| -------------------- | -------------------------------------------------------- |
+| **Unit Coverage**    | Target `TaskManager`, UI utilities, edge cases           |
+| **Error Handling**   | Simulate invalid inputs, API failures, navigation errors |
+| **CI Integration**   | Automate test runs on PRs with GitHub Actions            |
+| **Coverage Metrics** | Add coverage reporting and thresholds                    |
+| **Documentation**    | Expand test docs, write guidelines, link to features     |
+| **Behavior Mapping** | Link E2E tests to user stories and product requirements  |
+
+# Feedback received number 1: First 5 hours of work
 ## Strengths
 
 ### 1. **Clear, Modular Architecture**
@@ -26,7 +135,7 @@
 
 ## Areas for Improvement
 
-### 1. **Missing Test Coverage**
+### 1. **Missing Test Coverage** FIXED
 
 * The `tests/` directory exists but contains no actual tests yet ([GitHub][1]). Even for Phase 1, adding basic unit tests—for navigation behavior, TaskManager operations, or UI instantiation—would help catch regressions early.
 
@@ -35,7 +144,7 @@
 * No indication of input validation or error handling in the UI flow (e.g., invalid dependencies, circular task links, missing data).
 * As complexity increases in later phases, robustness will be essential, especially when introducing AI-based features.
 
-### 3. **AI Integration Plan Unclear**
+### 3. **AI Integration Plan Unclear** IN PROGRESS
 
 * As an ML architect, I'd expect clarification: How will prompts be constructed? Where will inference happen (local vs. API)? Error fallback if the model is unavailable?
 
