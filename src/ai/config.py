@@ -5,7 +5,20 @@ Handles environment variables, API keys, and service settings for AI integration
 """
 
 import os
+from pathlib import Path
 from typing import Optional
+
+# Ensure environment variables are loaded
+try:
+    from dotenv import load_dotenv
+    
+    # Look for .env file in project root
+    env_path = Path(__file__).parent.parent.parent / '.env'
+    if env_path.exists():
+        load_dotenv(env_path)
+    
+except ImportError:
+    pass  # dotenv not available
 
 
 class AIConfig:
