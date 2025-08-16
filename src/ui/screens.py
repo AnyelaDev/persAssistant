@@ -6,8 +6,11 @@ from kivy.uix.textinput import TextInput
 from kivy.uix.scrollview import ScrollView
 from kivy.uix.gridlayout import GridLayout
 from kivy.graphics import Color, Rectangle
+from kivy.clock import Clock
+import threading
 from src.core.config import AppConfig
 from src.ui.color_palette import ColorPalette
+from src.ai.grooming_service import GroomingService
 
 
 def set_screen_background(screen, color=None):
@@ -238,6 +241,10 @@ class ToDoListScreen(Screen):
         super().__init__(**kwargs)
         self.name = 'todo_list'
         
+        # Initialize AI service
+        self.grooming_service = GroomingService()
+        self.is_grooming = False
+        
         # Set screen background color
         set_screen_background(self)
         
@@ -275,13 +282,13 @@ class ToDoListScreen(Screen):
         # Buttons
         button_layout = BoxLayout(orientation='vertical', size_hint_y=None, height=120, spacing=10)
         
-        groom_btn = Button(
+        self.groom_btn = Button(
             text='Groom my list',
             size_hint_y=None,
             height=50,
             background_color=ColorPalette.BUTTON_SECONDARY
         )
-        groom_btn.bind(on_press=self.groom_list)
+        self.groom_btn.bind(on_press=self.groom_list)
         
         next_btn = Button(
             text='Next',
@@ -291,7 +298,7 @@ class ToDoListScreen(Screen):
         )
         next_btn.bind(on_press=lambda x: self.manager.switch_to_screen('times_dependencies'))
         
-        button_layout.add_widget(groom_btn)
+        button_layout.add_widget(self.groom_btn)
         button_layout.add_widget(next_btn)
         
         layout.add_widget(button_layout)
@@ -309,14 +316,75 @@ class ToDoListScreen(Screen):
         self.add_widget(layout)
     
     def groom_list(self, button):
-        # Placeholder for list grooming functionality
-        if self.text_input.text.strip():
-            items = self.text_input.text.strip().split('\n')
-            groomed_items = []
-            for i, item in enumerate(items, 1):
-                if item.strip():
-                    groomed_items.append(f"{i}. {item.strip()}")
-            self.text_input.text = '\n'.join(groomed_items)
+        """AI-powered todo list grooming with loading state and fallback."""
+        if not self.text_input.text.strip():
+            return
+        
+        if self.is_grooming:
+            return  # Prevent multiple simultaneous grooming operations
+        
+        # Start grooming process
+        self.is_grooming = True
+        self._update_grooming_ui(True)
+        
+        # Run AI grooming in background thread
+        def groom_worker():
+            try:
+                result = self.grooming_service.groom_todo_list(self.text_input.text)
+                # Schedule UI update on main thread
+                Clock.schedule_once(lambda dt: self._handle_grooming_result(result), 0)
+            except Exception as e:
+                # Handle unexpected errors
+                Clock.schedule_once(lambda dt: self._handle_grooming_error(str(e)), 0)
+        
+        thread = threading.Thread(target=groom_worker)
+        thread.daemon = True
+        thread.start()
+    
+    def _update_grooming_ui(self, is_loading: bool):
+        """Update UI to show loading state."""
+        if is_loading:
+            self.groom_btn.text = 'AI Grooming...'
+            self.groom_btn.disabled = True
+        else:
+            self.groom_btn.text = 'Groom my list'
+            self.groom_btn.disabled = False
+    
+    def _handle_grooming_result(self, result):
+        """Handle AI grooming result on main thread."""
+        self.is_grooming = False
+        self._update_grooming_ui(False)
+        
+        if result.success:
+            # Update text input with groomed tasks
+            formatted_tasks = result.get_formatted_tasks()
+            if formatted_tasks:
+                self.text_input.text = formatted_tasks
+                
+                # Show brief feedback if AI was used
+                if not result.fallback_used:
+                    original_text = self.groom_btn.text
+                    self.groom_btn.text = '✓ AI Groomed!'
+                    Clock.schedule_once(lambda dt: setattr(self.groom_btn, 'text', original_text), 2)
+                else:
+                    original_text = self.groom_btn.text
+                    self.groom_btn.text = '✓ Basic Groomed'
+                    Clock.schedule_once(lambda dt: setattr(self.groom_btn, 'text', original_text), 2)
+        else:
+            # Show error feedback
+            original_text = self.groom_btn.text
+            self.groom_btn.text = '✗ Grooming Failed'
+            Clock.schedule_once(lambda dt: setattr(self.groom_btn, 'text', original_text), 2)
+    
+    def _handle_grooming_error(self, error_message: str):
+        """Handle unexpected grooming errors."""
+        self.is_grooming = False
+        self._update_grooming_ui(False)
+        
+        # Show error feedback
+        original_text = self.groom_btn.text
+        self.groom_btn.text = '✗ Error Occurred'
+        Clock.schedule_once(lambda dt: setattr(self.groom_btn, 'text', original_text), 2)
 
 
 class TimesDependenciesScreen(Screen):
