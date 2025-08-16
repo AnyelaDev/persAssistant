@@ -529,14 +529,15 @@ class TimelineViewScreen(Screen):
         
         layout.add_widget(todo_section)
         
-        # Next button
-        next_btn = Button(
-            text='Next',
+        # Home button
+        home_btn = Button(
+            text='Home',
             size_hint_y=None,
             height=50,
             background_color=(0.7, 0.8, 0.9, 1)
         )
-        layout.add_widget(next_btn)
+        home_btn.bind(on_press=lambda x: self.manager.switch_to_screen('main_menu'))
+        layout.add_widget(home_btn)
         
         # Back button
         back_btn = Button(
