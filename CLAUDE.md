@@ -19,7 +19,16 @@ This project follows a strict development workflow as outlined in the "Workflow 
 
 1. **Testing Requirements**: Unit tests must be written for all code created. Tests should be run after adding new features.
 
-2. **Version Control**: Work with git and GitHub for version control with the following structure:
+2. **TDD Testing Evaluation**: Before implementing any GitHub issue, evaluate test impact:
+   - **Assess Behavioral Changes**: Determine if the change affects user behaviors or workflows
+   - **Analyze Current Test Coverage**: Check if existing behavioral tests cover the affected functionality
+   - **Follow TDD Principles**: Test behaviors and outcomes, not implementation details
+   - **Decision Criteria**:
+     - ✅ **No test changes needed** if: Change only adds functionality, doesn't break existing behavior, current tests validate user outcomes
+     - ⚠️  **Test updates required** if: Change modifies existing user behaviors, breaks existing workflows, adds new critical user scenarios
+   - **Documentation**: Always document the testing evaluation decision and reasoning
+
+3. **Version Control**: Work with git and GitHub for version control with the following structure:
    - Main branch must always remain stable with only stable code
    - Create GitHub issues for features and bugs
    - Each issue gets its own branch and PR
@@ -29,12 +38,12 @@ This project follows a strict development workflow as outlined in the "Workflow 
      - Change all acceptance criteria checkboxes from `[ ]` to `[x]`
      - Add completion status line with relevant details
      - Update the priority/timeline sections to reflect completion
-3. **Testing Strategy**: Implement automated tests after merges, including:
+4. **Testing Strategy**: Implement automated tests after merges, including:
    - Unit tests for all code
    - Integration tests when appropriate
    - Performance benchmarks as the codebase evolves
 
-4. **Progress Tracking**: Use labels to track code status hourly for benchmarking progress.
+5. **Progress Tracking**: Use labels to track code status hourly for benchmarking progress.
 
 ## Important Guidelines
 
