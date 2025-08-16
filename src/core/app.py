@@ -1,64 +1,53 @@
 from kivy.app import App
-from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.label import Label
-from kivy.uix.button import Button
-from kivy.uix.textinput import TextInput
+from kivy.uix.screenmanager import ScreenManager
+from kivy.properties import ListProperty
+from src.core.config import AppConfig
+from src.ui.color_palette import ColorPalette
+from src.ui.screens import (
+    MainMenuScreen, ExecutiveFunctionScreen, ToDoTimelineScreen,
+    ToDoListScreen, TimesDependenciesScreen, TimelineViewScreen,
+    EmotionsManagementScreen, HabitsScreen, PomodoroScreen, RoutinesScreen
+)
 
 
-class MainWidget(BoxLayout):
+class AppScreenManager(ScreenManager):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.orientation = 'vertical'
-        self.padding = 20
-        self.spacing = 10
         
-        # Title
-        title = Label(
-            text='Personal Assistant',
-            size_hint_y=None,
-            height=50,
-            font_size=24
-        )
-        self.add_widget(title)
+        # Add all screens
+        self.add_widget(MainMenuScreen())
+        self.add_widget(ExecutiveFunctionScreen())
+        self.add_widget(ToDoTimelineScreen())
+        self.add_widget(ToDoListScreen())
+        self.add_widget(TimesDependenciesScreen())
+        self.add_widget(TimelineViewScreen())
+        self.add_widget(EmotionsManagementScreen())
+        self.add_widget(HabitsScreen())
+        self.add_widget(PomodoroScreen())
+        self.add_widget(RoutinesScreen())
         
-        # Input area
-        self.text_input = TextInput(
-            hint_text='How can I help you today?',
-            multiline=True,
-            size_hint_y=None,
-            height=100
-        )
-        self.add_widget(self.text_input)
-        
-        # Send button
-        send_btn = Button(
-            text='Send',
-            size_hint_y=None,
-            height=50
-        )
-        send_btn.bind(on_press=self.on_send)
-        self.add_widget(send_btn)
-        
-        # Response area
-        self.response_label = Label(
-            text='Welcome! I\'m your personal assistant.',
-            text_size=(None, None),
-            halign='left',
-            valign='top'
-        )
-        self.add_widget(self.response_label)
+        # Set initial screen
+        self.current = 'main_menu'
     
-    def on_send(self, button):
-        user_input = self.text_input.text
-        if user_input.strip():
-            self.response_label.text = f"You said: {user_input}"
-            self.text_input.text = ""
+    def switch_to_screen(self, screen_name):
+        self.current = screen_name
 
 
 class PersonalAssistantApp(App):
+    # Color properties that can be accessed in .kv files as app.text_primary_color, etc.
+    text_primary_color = ListProperty(ColorPalette.TEXT_PRIMARY)
+    text_secondary_color = ListProperty(ColorPalette.TEXT_SECONDARY)
+    button_primary_color = ListProperty(ColorPalette.BUTTON_PRIMARY)
+    button_secondary_color = ListProperty(ColorPalette.BUTTON_SECONDARY)
+    button_tertiary_color = ListProperty(ColorPalette.BUTTON_TERTIARY)
+    button_neutral_color = ListProperty(ColorPalette.BUTTON_NEUTRAL)
+    background_primary_color = ListProperty(ColorPalette.BACKGROUND_PRIMARY)
+    background_secondary_color = ListProperty(ColorPalette.BACKGROUND_SECONDARY)
+    accent_blue_color = ListProperty(ColorPalette.ACCENT_BLUE)
+    
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.title = 'Personal Assistant'
+        self.title = AppConfig.get_app_title()
     
     def build(self):
-        return MainWidget()
+        return AppScreenManager()

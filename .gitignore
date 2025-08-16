@@ -48,6 +48,7 @@ coverage.xml
 .hypothesis/
 .pytest_cache/
 cover/
+/logs/**
 
 # Translations
 *.mo
@@ -161,3 +162,4 @@ Thumbs.db
 
 # Miscellaneous
 misc.txt
+misc **
